@@ -1,0 +1,9 @@
+{% if output %}
+    <ul>
+    {% for result in output %}
+        <li><a href="/stories/{{ result.id }}/">{{ result.response_text }}</a></li>
+    {% endfor %}
+    </ul>
+{% else %}
+    <p>No results are available.</p>
+{% endif %}

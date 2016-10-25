@@ -11,11 +11,20 @@ def prompts(request, prompt_id):
     output = ', '.join([p.prompt_text for p in prompt_list])
     return HttpResponse("Available Prompts: %s" % output)
 
+def prompt_detail(request, prompt_id):
+    prompt = get_object_or_404(Prompt, pk=prompt_id)
+    return render(request, 'stories/detail.html', {'prompt': prompt})
 
 def results(request, prompt_id):
     results_list = Response.objects.all()
-    output = ', '.join([p.response_text for p in results_list])
-    return HttpResponse("Available Stories: %s"  % output)
+    #output = ', '.join([p.response_text for p in results_list])
+    output = Response.objects.all()
+    context = {'output': output}
+    return render(request, 'stories/index.html', context)
+
+def result_detail(request, prompt_id):
+    result = get_object_or_404(Response, pk=response_id)
+    return render(request, 'stories/detail.html', {'prompt': result})
 
 def count(request, prompt_id):
     count = Response.objects.all()
