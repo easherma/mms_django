@@ -15,8 +15,7 @@ geom(point)
 notes
 
 
-###
-story ~ groups of maps?
+###story
 
 story_id
 story_name
@@ -24,7 +23,6 @@ story_description
 story_instructions
 
 
-###
-maps ~ geojson?
+### maps (groups of users by story as geojson?)
 
 not sure if this is a model or a route...basically thinking we'd run the query to group users by a requested story and parse that output to send JSON(geoJSON ideally) to the frontend
