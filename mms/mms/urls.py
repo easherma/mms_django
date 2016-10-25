@@ -5,6 +5,7 @@ urlpatterns = [
     # Examples:
     # url(r'^$', 'mms.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
-
+    url(r'^stories/', include('stories.urls')),
     url(r'^admin/', include(admin.site.urls)),
+    
 ]
