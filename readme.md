@@ -5,6 +5,7 @@
 ### user
 user may submit to any maps they are a member of(or access from a specific permalink?)
 
+```
 row_id
 user_id
 user_name
@@ -13,15 +14,16 @@ story_id
 path_order
 geom(point)
 notes
+```
 
 
 ###story
-
+```
 story_id
 story_name
 story_description
 story_instructions
-
+```
 
 ### maps (groups of users by story as geojson?)
 
