@@ -1,0 +1,8 @@
+<h1>Stories</h1>
+<ul>
+{% for story in object_list %}
+    <li>{{ story.response_text }}</li>
+{% empty %}
+    <li>No stories!</li>
+{% endfor %}
+</ul>

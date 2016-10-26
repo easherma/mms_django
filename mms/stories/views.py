@@ -13,6 +13,11 @@ class IndexView(generic.ListView):
         """Return a list of stories."""
         return Response.objects
 
+class StoriesListView(generic.ListView):
+    model = Response
+    template_name = 'stories/stories_list.html'
+    context_object_name = 'story'
+
 class DetailView(generic.DetailView):
     model = Response
     template_name = 'stories/detail.html'
