@@ -2,36 +2,45 @@
 
 
 ## models
-### user
-user may submit to any maps they are a member of(or access from a specific permalink?)
-
-```
-row_id
-user_id
-user_name
-user_email
-story_id
-path_order
-geom(point)
-notes
-```
 
 
 ### story
+
 ```
-story_id
 story_name
 story_description
 story_instructions
 ```
 
-### maps (groups of users by story as geojson?)
+### user
+user may submit to any maps they are a member of(or access from a specific permalink?)
 
-not sure if this is a model or a route...basically thinking we'd run the query to group users by a requested story and parse that output to send JSON(geoJSON ideally) to the frontend
+```
+story_id(FK)
+user_name
+user_email
+```
+### waypoint
+```
+geom(point)
+notes
+path_order
+```
+
+### submissions
+
+```
+user_id
+story_id
+waypoint_id
+```
+
+
+
 
 ### views
 * general:
-  * homepage: shows a random submission
+  * homepage: shows a specific submission
   * story page: permalink for a single story
   * gallery of stories: lists created stories
 
