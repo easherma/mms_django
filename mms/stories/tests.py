@@ -1,33 +1,50 @@
 from django.test import TestCase
 import factory
+import factory.fuzzy
 from . import models
 
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = model.Story
-    story_name= factory.fuzzy.FuzzyText(length=8, chars=string.ascii_letters, prefix='')
-    story_description= factory.fuzzy.FuzzyText(length=250, chars=string.ascii_letters, prefix='')
-    story_instructions= factory.fuzzy.FuzzyText(length=350, chars=string.ascii_letters, prefix='')
+        model = models.Story
+    story_name= factory.fuzzy.FuzzyText(length=8, prefix='')
+    story_description= factory.fuzzy.FuzzyText(length=250, prefix='')
+    story_instructions= factory.fuzzy.FuzzyText(length=350, prefix='')
+
+class StoryTestCase(TestCase):
+    def test_something(self):
+        story = StoryFactory.create()
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = model.User
+        model = models.User
     story_id = factory.SubFactory(StoryFactory)
-    user_name = factory.fuzzy.FuzzyText(length=12, chars=string.ascii_letters, prefix='')
-    user_email = email = factory.LazyAttribute(lambda a: '{0}.{1}@example.com'.format(a.first_name).lower())
+    user_name = factory.fuzzy.FuzzyText(length=12, prefix='')
+    user_email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.user_name).lower())
+
+class UserTestCase(TestCase):
+    def test_something(self):
+        user = UserFactory.create()
 
 class WaypointFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = model.Waypoint
-    geom = factory.fuzzy.FuzzyText(length=100, chars=string.ascii_letters, prefix='')
-    notes = factory.fuzzy.FuzzyText(length=8, chars=string.ascii_letters, prefix='')
-    path_order = FuzzyInteger(0, 6)
+        model = models.Waypoint
+    geom = factory.fuzzy.FuzzyText(length=100, prefix='')
+    notes = factory.fuzzy.FuzzyText(length=8, prefix='')
+    path_order = factory.fuzzy.FuzzyInteger(0, 6)
+
+class WaypointTestCase(TestCase):
+    def test_something(self):
+        waypoint = WaypointFactory.create()
 
 class SubmissionFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = model.Submission
-    story_users_count = models.IntegerField(default=0)
-    owner = factory.SubFactory(OwnerFactory)
+        model = models.Submission
+    story_users_count = factory.fuzzy.FuzzyInteger(0, 30)
+    #owner = factory.SubFactory(OwnerFactory)
     user_id = factory.SubFactory(UserFactory)
     story_id = factory.SubFactory(StoryFactory)
     waypoint_id = factory.SubFactory(WaypointFactory)
+
+class SubmissionTestCase(TestCase):
+    def test_something(self):
+        submission = SubmissionFactory.create()
