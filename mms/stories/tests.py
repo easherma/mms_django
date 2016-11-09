@@ -40,11 +40,13 @@ class SubmissionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Submission
     story_users_count = factory.fuzzy.FuzzyInteger(0, 30)
-    #owner = factory.SubFactory(OwnerFactory)
     user_id = factory.SubFactory(UserFactory)
     story_id = factory.SubFactory(StoryFactory)
     waypoint_id = factory.SubFactory(WaypointFactory)
 
 class SubmissionTestCase(TestCase):
     def test_something(self):
+        submission = SubmissionFactory.create()
+    def test_output(self):
+        #import pdb; pdb.set_trace()
         submission = SubmissionFactory.create()
