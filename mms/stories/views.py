@@ -5,27 +5,27 @@ from django.views import generic
 
 from .models import Prompt, Response
 
-class IndexView(generic.ListView):
-    template_name = 'stories/index.html'
-    context_object_name = 'output'
-
-    def get_queryset(self):
-        """Return a list of stories."""
-        return Response.objects
-
-class StoriesListView(generic.ListView):
-    model = Response
-    template_name = 'stories/stories_list.html'
-    context_object_name = 'story'
-
-class DetailView(generic.DetailView):
-    model = Response
-    template_name = 'stories/detail.html'
-
-class ResultsView(generic.DetailView):
-    model = Response
-    template_name = 'stories/results.html'
-
+# class IndexView(generic.ListView):
+#     template_name = 'stories/index.html'
+#     context_object_name = 'output'
+# 
+#     def get_queryset(self):
+#         """Return a list of stories."""
+#         return Response.objects
+#
+# class StoriesListView(generic.ListView):
+#     model = Response
+#     template_name = 'stories/stories_list.html'
+#     context_object_name = 'story'
+#
+# class DetailView(generic.DetailView):
+#     model = Response
+#     template_name = 'stories/detail.html'
+#
+# class ResultsView(generic.DetailView):
+#     model = Response
+#     template_name = 'stories/results.html'
+#
 
 # def index(request):
 #     return HttpResponse("check out this siick index")
