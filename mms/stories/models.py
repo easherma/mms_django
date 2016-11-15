@@ -1,4 +1,4 @@
-
+import datetime
 
 from django.db import models
 from django.utils import timezone
@@ -30,5 +30,3 @@ class Submission(models.Model):
     user_id = models.ForeignKey(User)
     story_id = models.ForeignKey(Story)
     waypoint_id = models.ForeignKey(Waypoint)
-    def __unicode__(self):
-        return self.user_id
