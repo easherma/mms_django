@@ -53,7 +53,7 @@ class SubmissionTestCase(TestCase):
     def test_something(self):
         submission = SubmissionFactory.create_batch(5)
         all_entries= models.Submission.objects.all()
-        import pdb; pdb.set_trace()
+        #import pdb; pdb.set_trace()
 
 
 class OutputTestCase(TestCase):
