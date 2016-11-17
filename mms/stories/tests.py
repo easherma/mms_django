@@ -3,6 +3,8 @@ import factory
 import factory.fuzzy
 import geojson
 from . import models
+from .models import User
+from .models import Waypoint
 
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -14,9 +16,16 @@ class StoryFactory(factory.django.DjangoModelFactory):
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.User
-    story_id = factory.SubFactory(StoryFactory)
+    story = factory.SubFactory(StoryFactory)
     user_name = factory.fuzzy.FuzzyText(length=12, prefix='')
     user_email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.user_name).lower())
+
+
+class SubmissionFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = models.Submission
+    user = factory.SubFactory(UserFactory)
+    story = factory.SubFactory(StoryFactory)
 
 class WaypointFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -26,15 +35,7 @@ class WaypointFactory(factory.django.DjangoModelFactory):
     lat = factory.fuzzy.FuzzyDecimal(-90, 90, precision=5)
     notes = factory.fuzzy.FuzzyText(length=8, prefix='')
     path_order = factory.fuzzy.FuzzyInteger(0, 6)
-
-class SubmissionFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Submission
-    story_users_count = factory.fuzzy.FuzzyInteger(0, 30)
-    user_id = factory.SubFactory(UserFactory)
-    story_id = factory.SubFactory(StoryFactory)
-    waypoint_id = factory.SubFactory(WaypointFactory)
-
+    submission = factory.SubFactory(SubmissionFactory)
 
 class StoryTestCase(TestCase):
     def test_something(self):
@@ -43,11 +44,26 @@ class StoryTestCase(TestCase):
 class UserTestCase(TestCase):
     def test_something(self):
         user = UserFactory.create_batch(5)
+        users = User.objects.all()
+        self.assertEqual(users.count(), 5)
+        self.assertIsNotNone(users[0].id)
 
 class WaypointTestCase(TestCase):
     def test_something(self):
-        waypoint = WaypointFactory.create_batch(5)
-        #print models.Waypoint.objects.all()
+        #waypoint = WaypointFactory.create_batch(5)
+        waypoint = WaypointFactory.create()
+        waypoints = Waypoint.objects.all()
+    def test_multWaypointForSubmission(self):
+        #waypoint = WaypointFactory.create_batch(5)
+        submission = SubmissionFactory.create()
+        waypoint = WaypointFactory.create_batch(5, submission=submission)
+        waypoints = Waypoint.objects.all()
+        self.assertIsNotNone(waypoints[0].id)
+        self.assertEqual(waypoints[0].submission, submission)
+        self.assertEqual(waypoints.count(), 5)
+        for waypoint in waypoints:
+            self.assertEqual(waypoint.submission, submission)
+            print waypoint.id, submission.id
 
 class SubmissionTestCase(TestCase):
     def test_something(self):

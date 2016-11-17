@@ -12,21 +12,21 @@ class Story(models.Model):
         return self.story_name
 
 class User(models.Model):
-    story_id = models.ForeignKey(Story)
+    story = models.ForeignKey(Story)
     user_name = models.CharField(max_length=200)
     user_email = models.EmailField(max_length=254)
     def __unicode__(self):
         return self.user_name
+class Submission(models.Model):
+    user = models.ForeignKey(User)
+    story = models.ForeignKey(Story)
+
 class Waypoint(models.Model):
     geom = models.CharField(max_length=200)
     notes = models.TextField()
     lng = models.DecimalField(max_digits=8, decimal_places=5)
     lat = models.DecimalField(max_digits=8, decimal_places=5)
     path_order = models.IntegerField(default=0)
+    submission = models.ForeignKey(Submission, null=True)
     def __unicode__(self):
-        return self.geom
-class Submission(models.Model):
-    story_users_count = models.IntegerField(default=0)
-    user_id = models.ForeignKey(User)
-    story_id = models.ForeignKey(Story)
-    waypoint_id = models.ForeignKey(Waypoint)
+        return "Waypoint: {}".format(self.id)
