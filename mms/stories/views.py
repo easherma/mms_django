@@ -1,11 +1,12 @@
-from stories.models import Waypoint
-from stories.serializers import WaypointSerializer
-from rest_framework import generics
+#from django.contrib.auth.models import User
+from stories.models import Story, User, Waypoint
+from stories.serializers import StorySerializer, UserSerializer,WaypointSerializer
+from rest_framework import viewsets
 
-class WaypointList(generics.ListCreateAPIView):
-    queryset = Waypoint.objects.all()
-    serializer_class = WaypointSerializer
+class StoryViewSet(viewsets.ModelViewSet):
+    queryset = Story.objects.all()
+    serializer_class = StorySerializer
 
-class WaypointDetail(generics.RetrieveUpdateDestroyAPIView):
-    queryset = Waypoint.objects.all()
-    serializer_class = WaypointSerializer
+class UserViewSet(viewsets.ModelViewSet):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer

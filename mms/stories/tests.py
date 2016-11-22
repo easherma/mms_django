@@ -17,8 +17,8 @@ class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.User
     story = factory.SubFactory(StoryFactory)
-    user_name = factory.fuzzy.FuzzyText(length=12, prefix='')
-    user_email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.user_name).lower())
+    name = factory.fuzzy.FuzzyText(length=12, prefix='')
+    email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.name).lower())
 
 
 class SubmissionFactory(factory.django.DjangoModelFactory):

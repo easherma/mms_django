@@ -9,14 +9,14 @@ class Story(models.Model):
     description = models.TextField()
     instructions = models.TextField()
     def __unicode__(self):
-        return self.story_name
+        return self.name
 
 class User(models.Model):
     story = models.ForeignKey(Story)
-    user_name = models.CharField(max_length=200)
-    user_email = models.EmailField(max_length=254)
+    name = models.CharField(max_length=200)
+    email = models.EmailField(max_length=254)
     def __unicode__(self):
-        return self.user_name
+        return self.name
 class Submission(models.Model):
     user = models.ForeignKey(User)
     story = models.ForeignKey(Story)
