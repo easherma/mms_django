@@ -1,6 +1,6 @@
 #from django.contrib.auth.models import User
 from rest_framework import serializers
-from stories.models import Story, User, Waypoint
+from stories.models import Story, User, Submission, Waypoint
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
@@ -11,6 +11,11 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
         fields = ('url','story', 'name', 'email')
+
+class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = Submission
+        fields = ('url','user', 'story')
 
 class WaypointSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
