@@ -5,9 +5,9 @@ from django.utils import timezone
 
 
 class Story(models.Model):
-    story_name = models.CharField(max_length=200)
-    story_description = models.TextField()
-    story_instructions = models.TextField()
+    name = models.CharField(max_length=200)
+    description = models.TextField()
+    instructions = models.TextField()
     def __unicode__(self):
         return self.story_name
 

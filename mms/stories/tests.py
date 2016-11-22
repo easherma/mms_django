@@ -9,9 +9,9 @@ from .models import Waypoint
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Story
-    story_name= factory.fuzzy.FuzzyText(length=8, prefix='')
-    story_description= factory.fuzzy.FuzzyText(length=250, prefix='')
-    story_instructions= factory.fuzzy.FuzzyText(length=350, prefix='')
+    name= factory.fuzzy.FuzzyText(length=8, prefix='')
+    description= factory.fuzzy.FuzzyText(length=250, prefix='')
+    instructions= factory.fuzzy.FuzzyText(length=350, prefix='')
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -69,7 +69,7 @@ class SubmissionTestCase(TestCase):
     def test_something(self):
         submission = SubmissionFactory.create_batch(5)
         all_entries= models.Submission.objects.all()
-        #import pdb; pdb.set_trace()
+
 
 
 class OutputTestCase(TestCase):
