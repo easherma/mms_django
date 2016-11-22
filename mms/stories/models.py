@@ -17,6 +17,7 @@ class User(models.Model):
     email = models.EmailField(max_length=254)
     def __unicode__(self):
         return self.name
+        
 class Submission(models.Model):
     user = models.ForeignKey(User)
     story = models.ForeignKey(Story)

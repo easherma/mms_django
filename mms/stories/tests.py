@@ -2,9 +2,11 @@ from django.test import TestCase
 import factory
 import factory.fuzzy
 import geojson
+import json
 from . import models
 from .models import User
 from .models import Waypoint
+from .models import Submission
 
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -54,7 +56,6 @@ class WaypointTestCase(TestCase):
         waypoint = WaypointFactory.create()
         waypoints = Waypoint.objects.all()
     def test_multWaypointForSubmission(self):
-        #waypoint = WaypointFactory.create_batch(5)
         submission = SubmissionFactory.create()
         waypoint = WaypointFactory.create_batch(5, submission=submission)
         waypoints = Waypoint.objects.all()
@@ -63,12 +64,24 @@ class WaypointTestCase(TestCase):
         self.assertEqual(waypoints.count(), 5)
         for waypoint in waypoints:
             self.assertEqual(waypoint.submission, submission)
-            print waypoint.id, submission.id, submission.user, submission.story
+            #print waypoint.id, submission.id, submission.user, submission.story
 
 class SubmissionTestCase(TestCase):
     def test_something(self):
-        submission = SubmissionFactory.create_batch(5)
+        submission = SubmissionFactory.create()
         all_entries= models.Submission.objects.all()
+        #maybe test many to one relationship
+    def test_submission(self):
+        story = StoryFactory.create()
+        user = UserFactory.create()
+        submission = SubmissionFactory.create(story = story, user = user)
+        self.assertEqual(submission.story, story)
+        self.assertEqual(submission.user, user)
+        waypoint = WaypointFactory.create_batch(5, submission=submission)
+        #waypoints = Waypoint.objects.all()
+        submissions = Submission.objects.all()
+
+
 
 
 
