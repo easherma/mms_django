@@ -63,7 +63,7 @@ class WaypointTestCase(TestCase):
         self.assertEqual(waypoints.count(), 5)
         for waypoint in waypoints:
             self.assertEqual(waypoint.submission, submission)
-            print waypoint.id, submission.id
+            print waypoint.id, submission.id, submission.user, submission.story
 
 class SubmissionTestCase(TestCase):
     def test_something(self):
@@ -72,9 +72,11 @@ class SubmissionTestCase(TestCase):
 
 
 
-class OutputTestCase(TestCase):
+#class OutputTestCase(TestCase):
 
-    def test_get_profile_stats(self):
-        profiles = []
-        profiles.extend(SubmissionFactory.create_batch(4))
-        #print profiles
+    #def geojson(self):
+        #create story
+        #users in story
+        #waypoints for each user (submissions?)
+        #query object, parse into geojson
+        #make a route that prints the geojson
