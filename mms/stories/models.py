@@ -1,23 +1,24 @@
 import datetime
-
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils import timezone
 
+
+# class User(models.Model):
+#     name = models.CharField(max_length=200)
+#     email = models.EmailField(max_length=254)
+#     def __unicode__(self):
+#         return self.name
 
 class Story(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
+    user = models.ForeignKey(User, null = True)
     def __unicode__(self):
         return self.name
 
-class User(models.Model):
-    story = models.ForeignKey(Story)
-    name = models.CharField(max_length=200)
-    email = models.EmailField(max_length=254)
-    def __unicode__(self):
-        return self.name
-        
+
 class Submission(models.Model):
     user = models.ForeignKey(User)
     story = models.ForeignKey(Story)

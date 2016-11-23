@@ -4,9 +4,10 @@ import factory.fuzzy
 import geojson
 import json
 from . import models
-from .models import User
+from django.contrib.auth.models import User
 from .models import Waypoint
 from .models import Submission
+#from rest_framework import APIClient, APIRequestFactory
 
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -17,10 +18,9 @@ class StoryFactory(factory.django.DjangoModelFactory):
 
 class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = models.User
-    story = factory.SubFactory(StoryFactory)
-    name = factory.fuzzy.FuzzyText(length=12, prefix='')
-    email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.name).lower())
+        model = User
+    username = factory.fuzzy.FuzzyText(length=12, prefix='')
+    email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.username).lower())
 
 
 class SubmissionFactory(factory.django.DjangoModelFactory):
@@ -80,6 +80,8 @@ class SubmissionTestCase(TestCase):
         waypoint = WaypointFactory.create_batch(5, submission=submission)
         #waypoints = Waypoint.objects.all()
         submissions = Submission.objects.all()
+
+
 
 
 
