@@ -1,5 +1,5 @@
 import datetime
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractBaseUser
 from django.db import models
 from django.utils import timezone
 
@@ -10,17 +10,21 @@ from django.utils import timezone
 #     def __unicode__(self):
 #         return self.name
 
+class StoryUser(AbstractBaseUser):
+    username = models.CharField(max_length=200)
+    email = models.EmailField(max_length=254, unique=True)
+
 class Story(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    user = models.ForeignKey(User, null = True)
+    user = models.ForeignKey(StoryUser, null = True)
     def __unicode__(self):
         return self.name
 
 
 class Submission(models.Model):
-    user = models.ForeignKey(User)
+    user = models.ForeignKey(StoryUser)
     story = models.ForeignKey(Story)
 
 class Waypoint(models.Model):

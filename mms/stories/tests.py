@@ -4,7 +4,7 @@ import factory.fuzzy
 import geojson
 import json
 from . import models
-from django.contrib.auth.models import User
+from .models import StoryUser
 from .models import Waypoint
 from .models import Submission
 #from rest_framework import APIClient, APIRequestFactory
@@ -16,9 +16,9 @@ class StoryFactory(factory.django.DjangoModelFactory):
     description= factory.fuzzy.FuzzyText(length=250, prefix='')
     instructions= factory.fuzzy.FuzzyText(length=350, prefix='')
 
-class UserFactory(factory.django.DjangoModelFactory):
+class StoryUserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = User
+        model = StoryUser
     username = factory.fuzzy.FuzzyText(length=12, prefix='')
     email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.username).lower())
 
@@ -26,7 +26,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 class SubmissionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Submission
-    user = factory.SubFactory(UserFactory)
+    user = factory.SubFactory(StoryUserFactory)
     story = factory.SubFactory(StoryFactory)
 
 class WaypointFactory(factory.django.DjangoModelFactory):
@@ -45,8 +45,8 @@ class StoryTestCase(TestCase):
 
 class UserTestCase(TestCase):
     def test_something(self):
-        user = UserFactory.create_batch(5)
-        users = User.objects.all()
+        user = StoryUserFactory.create_batch(5)
+        users = StoryUser.objects.all()
         self.assertEqual(users.count(), 5)
         self.assertIsNotNone(users[0].id)
 
@@ -73,7 +73,7 @@ class SubmissionTestCase(TestCase):
         #maybe test many to one relationship
     def test_submission(self):
         story = StoryFactory.create()
-        user = UserFactory.create()
+        user = StoryUserFactory.create()
         submission = SubmissionFactory.create(story = story, user = user)
         self.assertEqual(submission.story, story)
         self.assertEqual(submission.user, user)

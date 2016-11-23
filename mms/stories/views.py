@@ -1,5 +1,5 @@
-#from django.contrib.auth.models import User
-from stories.models import Story, User, Submission, Waypoint
+from django.contrib.auth.models import User
+from stories.models import Story, Submission, Waypoint
 from stories.serializers import StorySerializer, UserSerializer, SubmissionSerializer, WaypointSerializer
 from rest_framework import viewsets
 
