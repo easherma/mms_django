@@ -65,7 +65,7 @@ class WaypointTestCase(TestCase):
         for waypoint in waypoints:
             self.assertEqual(waypoint.submission, submission)
             #print waypoint.id, submission.id, submission.user, submission.story
-
+#let waypoint geom be blank
 class SubmissionTestCase(TestCase):
     def test_something(self):
         submission = SubmissionFactory.create()

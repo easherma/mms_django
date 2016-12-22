@@ -1,5 +1,5 @@
-from django.contrib.auth.models import User
-from stories.models import Story, Submission, Waypoint
+
+from stories.models import Story, StoryUser, Submission, Waypoint
 from stories.serializers import StorySerializer, UserSerializer, SubmissionSerializer, WaypointSerializer
 from rest_framework import viewsets
 
@@ -8,7 +8,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     serializer_class = StorySerializer
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = StoryUser.objects.all()
     serializer_class = UserSerializer
 
 class SubmissionViewSet(viewsets.ModelViewSet):
