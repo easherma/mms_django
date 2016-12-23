@@ -7,7 +7,13 @@ from . import models
 from .models import StoryUser
 from .models import Waypoint
 from .models import Submission
-#from rest_framework import APIClient, APIRequestFactory
+from django.core.urlresolvers import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from rest_framework.test import APIClient
+from django.test import Client
+
+
 
 class StoryFactory(factory.django.DjangoModelFactory):
     class Meta:
@@ -44,11 +50,26 @@ class StoryTestCase(TestCase):
         story = StoryFactory.create_batch(3)
 
 class UserTestCase(TestCase):
-    def test_something(self):
+    def test_creation(self):
         user = StoryUserFactory.create_batch(5)
         users = StoryUser.objects.all()
         self.assertEqual(users.count(), 5)
         self.assertIsNotNone(users[0].id)
+        self.client = Client()
+        response = self.client.get('/users/')
+        self.assertEqual(response.status_code, 200)
+        for user in users:
+            self.assertTrue(user.username in response.content)
+
+
+    #def test_details(self):
+
+        #url = reverse('users')
+        #data = users[0]
+        # response = self.client.post(url, data, format='json')
+        # self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        # self.assertEqual(Account.objects.count(), 1)
+        #self.assertEqual(Account.objects.get().name, 'DabApps')
 
 class WaypointTestCase(TestCase):
     def test_something(self):
