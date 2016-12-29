@@ -15,13 +15,8 @@ from tests import StoryUserFactory
 
 class CreateUser(APITestCase):
     def test_can_create_user(self):
-        user = StoryUserFactory.create()
-        #random example works if its hardcoded
-        users = StoryUser.objects.all()
-        self.data = {'username': 'testuser', 'email': 'testuser@example.com'}
-
-        #@TODO should be this (use factoryboy to create attributes without posting the object?):
-        #self.data = {'username': str(user.username), 'email': user.email}
+        user = StoryUserFactory.build()
+        self.data = {'username': user.username, 'email': user.email}
         response = self.client.post('/users/', self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
