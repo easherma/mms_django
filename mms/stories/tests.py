@@ -104,11 +104,6 @@ class SubmissionTestCase(TestCase):
         submissions = Submission.objects.all()
 
 
-
-
-
-
-
 #class OutputTestCase(TestCase):
 
     #def geojson(self):

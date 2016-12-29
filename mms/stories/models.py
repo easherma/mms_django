@@ -37,4 +37,4 @@ class Waypoint(models.Model):
     path_order = models.IntegerField(default=0)
     submission = models.ForeignKey(Submission, null=True)
     def __unicode__(self):
-        return "Waypoint: {}".format(self.id)
+        return "Waypoint: {}, {}".format(self.lng, self.lat)

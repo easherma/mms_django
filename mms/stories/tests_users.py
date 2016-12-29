@@ -6,10 +6,7 @@ from rest_framework.test import APITestCase
 from .serializers import UserSerializer
 import factory
 import factory.fuzzy
-from . import models
 from .models import StoryUser
-from .models import Waypoint
-from .models import Submission
 from tests import StoryUserFactory
 #from django.test import Client
 
@@ -38,7 +35,7 @@ class UpdateUser(APITestCase):
         self.assertEqual(update.status_code, status.HTTP_200_OK)
 
 class DeleteUser(APITestCase):
-    def test_can_update_user(self):
+    def test_can_delete_user(self):
         user = StoryUserFactory.create_batch(5)
         users = StoryUser.objects.all()
         before = StoryUser.objects.count()
