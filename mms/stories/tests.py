@@ -12,6 +12,7 @@ from rest_framework import status
 from rest_framework.test import APITestCase
 from rest_framework.test import APIClient
 from django.test import Client
+from django.contrib.auth.models import User
 
 
 
@@ -26,7 +27,7 @@ class StoryUserFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = StoryUser
     username = factory.fuzzy.FuzzyText(length=12, prefix='')
-    email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.username).lower())
+    email = factory.LazyAttribute(lambda a: u'{0}@example.com'.format(a.username).lower())
 
 
 class SubmissionFactory(factory.django.DjangoModelFactory):

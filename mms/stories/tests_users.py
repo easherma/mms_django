@@ -17,13 +17,13 @@ class CreateUser(APITestCase):
     def test_can_create_user(self):
         user = StoryUserFactory.create()
         #random example works if its hardcoded
-        self.data = {'username': user.username, 'email': 'anvonwxcgttq@example.com'}
-        print self.data
-        #@TODO should be this:
+        users = StoryUser.objects.all()
+        self.data = {'username': 'testuser', 'email': 'testuser@example.com'}
+
+        #@TODO should be this (use factoryboy to create attributes without posting the object?):
         #self.data = {'username': str(user.username), 'email': user.email}
         response = self.client.post('/users/', self.data)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        print "create user ok"
 
 class ReadUser(APITestCase):
     def test_can_read_user(self):
@@ -38,10 +38,17 @@ class UpdateUser(APITestCase):
         users = StoryUser.objects.all()
         #select first created user
         change = StoryUser.objects.filter(username=users[0].username).update(username='changed')
-        changed =
-        for user in users:
-            print user.username
-        #selected =  StoryUser.objects.get('username'=users.username )
-        #@TODO, not sure I'mm approaching this correctly, may need to update the view?
-        response = self.client.put('/users/', )
-        #obj.objects.update({'username': 'changed'})
+        self.data = {'username': users[0].username, 'email': users[0].email}
+        update = self.client.put('/users/{}/'.format(users[0].id), self.data)
+        self.assertEqual(update.status_code, status.HTTP_200_OK)
+
+class DeleteUser(APITestCase):
+    def test_can_update_user(self):
+        user = StoryUserFactory.create_batch(5)
+        users = StoryUser.objects.all()
+        before = StoryUser.objects.count()
+        self.data = {'username': users[0].username, 'email': users[0].email}
+        delete = self.client.delete('/users/{}/'.format(users[0].id), self.data)
+        after = StoryUser.objects.count()
+        self.assertEqual(delete.status_code, status.HTTP_204_NO_CONTENT)
+        self.assertTrue(before > after)

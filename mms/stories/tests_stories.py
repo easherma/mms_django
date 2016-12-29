@@ -14,14 +14,14 @@ from .models import Submission
 from tests import StoryUserFactory
 #from django.test import Client
 
-class CreateUserTest(APITestCase):
-    def test_can_create_user(self):
-        user = StoryUserFactory.create()
-        #random example works if its hardcoded
-        self.data = {'username': user.username, 'email': 'anvonwxcgttq@example.com'}
-        print self.data
-        #@TODO should be this:
-        #self.data = {'username': str(user.username), 'email': user.email}
-        response = self.client.post('/users/', self.data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        print "create user ok"
+# class CreateUserTest(APITestCase):
+#     def test_can_create_user(self):
+#         user = StoryUserFactory.create()
+#         #random example works if its hardcoded
+#         self.data = {'username': user.username, 'email': 'anvonwxcgttq@example.com'}
+#         print self.data
+#         #@TODO should be this:
+#         #self.data = {'username': str(user.username), 'email': user.email}
+#         response = self.client.post('/users/', self.data)
+#         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+#         print "create user ok"
