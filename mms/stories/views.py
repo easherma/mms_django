@@ -7,7 +7,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
-class UserViewSet(viewsets.ModelViewSet):
+class UserViewSet(viewsets.ModelViewSet): 
     queryset = StoryUser.objects.all()
     serializer_class = UserSerializer
 

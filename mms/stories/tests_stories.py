@@ -2,11 +2,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
 from .serializers import UserSerializer
 import factory
 import factory.fuzzy
-
 from .models import Story
 from tests import StoryFactory
 #from django.test import Client
@@ -19,7 +17,7 @@ class CreateStory(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
 class ReadStory(APITestCase):
-    def test_can_read_user(self):
+    def test_can_read_story(self):
         story = StoryFactory.create()
         response = self.client.get('/stories/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)

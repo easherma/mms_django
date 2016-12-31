@@ -5,13 +5,6 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-
-# class User(models.Model):
-#     name = models.CharField(max_length=200)
-#     email = models.EmailField(max_length=254)
-#     def __unicode__(self):
-#         return self.name
-
 class StoryUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=200)
     email = models.EmailField(max_length=254, unique=True)
