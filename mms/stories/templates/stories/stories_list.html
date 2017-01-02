@@ -1,8 +1,10 @@
+<html><body>
 <h1>Stories</h1>
 <ul>
-{% for story in object_list %}
-    <li>{{ story.response_text }}</li>
+{% for story in stories %}
+    <li>{{ story.name }}</li>
 {% empty %}
     <li>No stories!</li>
 {% endfor %}
 </ul>
+</body></html>

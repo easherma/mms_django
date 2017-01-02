@@ -7,6 +7,7 @@ router.register(r'users', views.UserViewSet)
 router.register(r'stories', views.StoryViewSet)
 router.register(r'submissions', views.SubmissionViewSet)
 router.register(r'waypoints', views.WaypointViewSet)
+router.register(r'storylist', views.StoryList, base_name='stories')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

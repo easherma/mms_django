@@ -2,7 +2,7 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-
+import geojson
 from .serializers import UserSerializer
 import factory
 import factory.fuzzy
@@ -11,6 +11,9 @@ from tests import WaypointFactory
 from .models import StoryUser
 from tests import StoryUserFactory
 #from django.test import Client
+
+#make random geojson test data
+waypoint = geojson.utils.generate_random("Point")
 
 class CreateWaypoint(APITestCase):
     def test_can_create_Waypoint(self):
