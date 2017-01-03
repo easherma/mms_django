@@ -20,8 +20,9 @@ class Story(models.Model):
 
 class Submission(models.Model):
     user = models.ForeignKey(StoryUser)
-    story = models.ForeignKey(Story)
-
+    story = models.ForeignKey(Story, related_name='submissions', on_delete=models.CASCADE)
+    def __unicode__(self):
+        return str(self.user) + ', ' + str(self.story)
 class Waypoint(models.Model):
     geom = models.CharField(max_length=200)
     notes = models.TextField()

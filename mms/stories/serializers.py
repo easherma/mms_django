@@ -3,11 +3,13 @@ from rest_framework import serializers
 from stories.models import Story, StoryUser, Submission, Waypoint
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
+    submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
     class Meta:
         model = Story
-        fields = ('url', 'name', 'description', 'instructions')
+        fields = ('url', 'name', 'description', 'instructions', 'user', 'submissions')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    
     class Meta:
         model = StoryUser
         fields = ('url','username', 'email')
