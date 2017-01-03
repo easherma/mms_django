@@ -19,15 +19,17 @@ class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('url','user', 'story')
 
 class WaypointSerializer(serializers.HyperlinkedModelSerializer):
+    # users = UserSerializer(many=True)
+    # story = StorySerializer()
     class Meta:
         model = Waypoint
         #geo_field = "geom"
         fields = ('url', 'geom', 'notes', 'lng', 'lat', 'path_order', 'submission')
 
-class WaypointsSerializer(serializers.ModelSerializer):
-    waypoints = serializers.StringRelatedField(many=True)
+class WaypointsSerializer(serializers.HyperlinkedModelSerializer):
+    # users = UserSerializer(many=True)
+    # story = StorySerializer
 
     class Meta:
-        model = Story
-        fields = ('url', 'name', 'description', 'instructions')
-        
+        model = Waypoint
+        fields = ('url', 'geom', 'notes', 'lng', 'lat', 'path_order', 'submission__user')

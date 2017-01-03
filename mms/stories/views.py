@@ -25,11 +25,10 @@ class StoryViewSet(viewsets.ModelViewSet):
 #     renderer_classes = (TemplateHTMLRenderer,)
 #     template_name = 'rest_framework/stories_list.html'
 
-class WaypointsByStory(generics.ListAPIView):
-
+class WaypointsByStory(viewsets.ModelViewSet):
     serializer_class = WaypointSerializer
     storyname = 'My First Story'
-    queryset = Waypoint.objects.filter(submission__story__name='My First Story')
+    queryset = Waypoint.objects.filter(submission__story__name='My First Story').select_related('submission')
 
 
 class UserViewSet(viewsets.ModelViewSet):
