@@ -37,8 +37,9 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'stories',
-    'rest_framework'
+    'rest_framework',
+    #'rest_framework_gis',
+    'stories'
 )
 
 MIDDLEWARE_CLASSES = (
@@ -57,7 +58,7 @@ ROOT_URLCONF = 'mms.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [

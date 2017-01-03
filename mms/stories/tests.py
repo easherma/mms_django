@@ -39,9 +39,10 @@ class SubmissionFactory(factory.django.DjangoModelFactory):
 class WaypointFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Waypoint
+    waypoint = geojson.utils.generate_random("Point")
     geom = geojson.utils.generate_random("Point")
-    lng = factory.fuzzy.FuzzyDecimal(-180, 180, precision=5)
-    lat = factory.fuzzy.FuzzyDecimal(-90, 90, precision=5)
+    lng = waypoint.coordinates[0]
+    lat = waypoint.coordinates[1]
     notes = factory.fuzzy.FuzzyText(length=8, prefix='')
     path_order = factory.fuzzy.FuzzyInteger(0, 6)
     submission = factory.SubFactory(SubmissionFactory)
