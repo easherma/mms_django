@@ -19,9 +19,20 @@ class StoryViewSet(viewsets.ModelViewSet):
     serializer_class = StorySerializer
 
     @detail_route()
-    def map(self, request, pk=None):
-        queryset = Waypoint.objects.all()
+    def waypoints(self, request, pk=None):
+        story = self.get_object()
+        pk = self.kwargs['pk']
+        queryset = Waypoint.objects.filter(submission=story.pk)
         return Response(queryset.values())
+
+    @detail_route()
+    def users(self, request, pk=None):
+        story = self.get_object()
+        pk = self.kwargs['pk']
+        queryset = StoryUser.objects.filter(submission=story.pk)
+        return Response(queryset.values())
+
+
     # def get_queryset(self):
     #     """
     #     This view should return a list of all the purchases for

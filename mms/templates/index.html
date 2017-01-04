@@ -3,4 +3,10 @@
   {% for story in view.stories %}
     <li>{{ story.name|default:"nothing" }}</li>
   {% endfor %}
+
+
+  {% for user in view.users %}
+    <li>{{ user.username|default:"nothing" }}</li>
+  {% endfor %}
+
 <ul>
