@@ -22,13 +22,13 @@ class StoryViewSet(viewsets.ModelViewSet):
     def map(self, request, pk=None):
         queryset = Waypoint.objects.all()
         return Response(queryset.values())
-    def get_queryset(self):
-        """
-        This view should return a list of all the purchases for
-        the user as determined by the username portion of the URL.
-        """
-        name = self.kwargs['name']
-        return Story.objects.filter(name=name)
+    # def get_queryset(self):
+    #     """
+    #     This view should return a list of all the purchases for
+    #     the user as determined by the username portion of the URL.
+    #     """
+    #     name = self.kwargs['name']
+    #     return Story.objects.filter(name=name)
 
 # class StoryListViewSet(viewsets.ModelViewSet):
 #     """
