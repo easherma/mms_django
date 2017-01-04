@@ -2,6 +2,8 @@ from django.conf.urls import url, include
 from rest_framework import routers
 from stories import views
 from rest_framework.schemas import get_schema_view
+from django.views.generic import TemplateView
+from mms.views import HomePageView
 
 
 schema_view = get_schema_view(title='Map My Story API View')
@@ -15,7 +17,7 @@ router.register(r'^stories/(?P<name>.+)/$', views.StoryViewSet)
 
 
 
-urlpatterns = [
+api_patterns = [
     url(r'^', include(router.urls)),
     #url('^testview/$', views.WaypointsByStory),
     #url('^stories/(?P<pk>.+)/$', views.StoryViewSet.as_view({'get': 'list'})),
@@ -23,6 +25,14 @@ urlpatterns = [
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
 
-client_patterns = [
-    url(r'^(?P<name>pattern)/$', views.StoryViewSet.as_view({'get': 'list'}))
+urlpatterns = [
+    #url(r'^(?P<name>pattern)/$', views.StoryViewSet.as_view({'get': 'list'})),
+    url(r'^$', HomePageView.as_view()),
+    url(r'^api/', include(api_patterns))
+
 ]
+
+# urlpatterns = patterns('',
+#     url(r'^api/', include('router.urls', namespace="api")),
+#     url(r'^test/', TemplateView.as_view(template_name="index.html"))
+# )
