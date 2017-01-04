@@ -6,6 +6,10 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework import generics
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.renderers import JSONRenderer
+from django.utils.six import BytesIO
+from rest_framework.parsers import JSONParser
 
 class StoryViewSet(viewsets.ModelViewSet):
     """
@@ -13,8 +17,18 @@ class StoryViewSet(viewsets.ModelViewSet):
     """
     queryset = Story.objects.all()
     serializer_class = StorySerializer
-    #renderer_classes = (TemplateHTMLRenderer,)
-    #template_name = 'rest_framework/stories_list.html'
+
+    @detail_route()
+    def map(self, request, pk=None):
+        queryset = Waypoint.objects.all()
+        return Response(queryset.values())
+    def get_queryset(self):
+        """
+        This view should return a list of all the purchases for
+        the user as determined by the username portion of the URL.
+        """
+        name = self.kwargs['name']
+        return Story.objects.filter(name=name)
 
 # class StoryListViewSet(viewsets.ModelViewSet):
 #     """

@@ -11,15 +11,18 @@ router.register(r'users', views.UserViewSet)
 router.register(r'stories', views.StoryViewSet)
 router.register(r'submissions', views.SubmissionViewSet)
 router.register(r'waypoints', views.WaypointViewSet)
-
+router.register(r'^stories/(?P<name>.+)/$', views.StoryViewSet)
 
 
 
 urlpatterns = [
     url(r'^', include(router.urls)),
     #url('^testview/$', views.WaypointsByStory),
-    #url('^purchases/(?P<username>.+)/$', PurchaseList.as_view()),
-    url('^testview/$', views.WaypointsByStory.as_view({'get': 'list'})),
+    #url('^stories/(?P<pk>.+)/$', views.StoryViewSet.as_view({'get': 'list'})),
     url('^schema/$', schema_view),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
+]
+
+client_patterns = [
+    url(r'^(?P<name>pattern)/$', views.StoryViewSet.as_view({'get': 'list'}))
 ]
