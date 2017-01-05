@@ -29,11 +29,11 @@ class Submission(models.Model):
     story = models.ForeignKey(Story , related_name='submissions', on_delete=models.CASCADE)
 
 class Waypoint(models.Model):
-    geom = models.CharField(max_length=200)
+    geom = models.CharField(max_length=200 , blank=False)
     notes = models.TextField()
-    lng = models.DecimalField(max_digits=8, decimal_places=5)
-    lat = models.DecimalField(max_digits=8, decimal_places=5)
+    lng = models.DecimalField(max_digits=8, decimal_places=5, blank=False)
+    lat = models.DecimalField(max_digits=8, decimal_places=5, blank=False)
     path_order = models.IntegerField(default=0)
-    submission = models.ForeignKey(Submission, null=True, related_name='waypoints', on_delete=models.CASCADE)
+    submission = models.ForeignKey(Submission, null=True, related_name='waypoints', on_delete=models.CASCADE, blank=False)
     # def __unicode__(self):
     #     return "Waypoint: {}, {}".format(self.lng, self.lat)
