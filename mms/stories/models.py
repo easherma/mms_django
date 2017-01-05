@@ -17,7 +17,7 @@ class Story(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    user = models.ForeignKey(StoryUser, null = True)
+    user = models.ForeignKey(StoryUser, null = True, related_name='owner')
     def __unicode__(self):
         return self.name
     @classmethod
@@ -25,8 +25,8 @@ class Story(models.Model):
         story = Story.objects.all()
 
 class Submission(models.Model):
-    user = models.ForeignKey(StoryUser)
-    story = models.ForeignKey(Story)
+    user = models.ForeignKey(StoryUser, related_name='submissions', on_delete=models.CASCADE)
+    story = models.ForeignKey(Story , related_name='submissions', on_delete=models.CASCADE)
 
 class Waypoint(models.Model):
     geom = models.CharField(max_length=200)
@@ -34,6 +34,6 @@ class Waypoint(models.Model):
     lng = models.DecimalField(max_digits=8, decimal_places=5)
     lat = models.DecimalField(max_digits=8, decimal_places=5)
     path_order = models.IntegerField(default=0)
-    submission = models.ForeignKey(Submission, null=True)
+    submission = models.ForeignKey(Submission, null=True, related_name='waypoints', on_delete=models.CASCADE)
     # def __unicode__(self):
     #     return "Waypoint: {}, {}".format(self.lng, self.lat)

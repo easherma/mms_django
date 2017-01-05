@@ -12,29 +12,31 @@ from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 
 class StoryViewSet(viewsets.ModelViewSet):
-    """
-    See existing stories, add one
-    """
+
     queryset = Story.objects.all()
     serializer_class = StorySerializer
 
     @detail_route()
     def waypoints(self, request, pk=None):
+        serializer = WaypointSerializer
         story = self.get_object()
-        #pk = self.kwargs['pk']
-        #queryset = Waypoint.objects.filter(submission=story.pk)
-        # get to basic types, use submission_set.waypoint_set etc
-        #loop through all waypoints for each submission
+        submissions = story.submissions.all()
+        waypoints = []
+        for submission in submissions:
+            waypoint = submission.waypoint_set.values()
+            waypoints.append(waypoint)
+
+
         # waypoints ={}
         # for submission in submissions:
         #     get submission.waypoint
         #     append
         #stories = Story.objects.prefetch_related('submission_set').all()
         #story.submission_set.all()[0].waypoint_set.all().values()
-        submissions = story.submission_set.all()
-        waypoints = submissions
-        queryset = Story.objects.filter(id=story.id).select_related('submission_set')
-        return Response(#list or dictionary of basic values)
+
+        #queryset = Story.objects.filter(id=story.id).select_related('submission_set')
+        #queryset = self.get_object()
+        return Response(waypoints)
 
     @detail_route()
     def users(self, request, pk=None):

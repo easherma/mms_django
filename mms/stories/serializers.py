@@ -4,19 +4,22 @@ from stories.models import Story, StoryUser, Submission, Waypoint
 #from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
+    submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
     class Meta:
         model = Story
-        fields = ('url', 'name', 'description', 'instructions')
+        fields = ('url', 'name', 'description', 'instructions', 'submissions')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
+    submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
     class Meta:
         model = StoryUser
-        fields = ('url','username', 'email')
+        fields = ('url','username', 'email', 'submissions')
 
 class SubmissionSerializer(serializers.HyperlinkedModelSerializer):
+    waypoints = serializers.HyperlinkedRelatedField(many=True, view_name='waypoint-detail', queryset = Waypoint.objects.all(), allow_null=True)
     class Meta:
         model = Submission
-        fields = ('url','user', 'story')
+        fields = ('url','user', 'story', 'waypoints')
 
 class WaypointSerializer(serializers.HyperlinkedModelSerializer):
     # users = UserSerializer(many=True)
