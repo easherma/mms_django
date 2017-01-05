@@ -18,12 +18,12 @@ class StoryViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def waypoints(self, request, pk=None):
-        serializer = WaypointSerializer
+        #serializer = WaypointSerializer
         story = self.get_object()
         submissions = story.submissions.all()
         waypoints = []
         for submission in submissions:
-            waypoint = submission.waypoint_set.values()
+            waypoint = submission.waypoints.values()
             waypoints.append(waypoint)
 
 
