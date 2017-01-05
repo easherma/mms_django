@@ -21,15 +21,27 @@ class StoryViewSet(viewsets.ModelViewSet):
     @detail_route()
     def waypoints(self, request, pk=None):
         story = self.get_object()
-        pk = self.kwargs['pk']
-        queryset = Waypoint.objects.filter(submission=story.pk)
-        return Response(queryset.values())
+        #pk = self.kwargs['pk']
+        #queryset = Waypoint.objects.filter(submission=story.pk)
+        # get to basic types, use submission_set.waypoint_set etc
+        #loop through all waypoints for each submission
+        # waypoints ={}
+        # for submission in submissions:
+        #     get submission.waypoint
+        #     append
+        #stories = Story.objects.prefetch_related('submission_set').all()
+        #story.submission_set.all()[0].waypoint_set.all().values()
+        submissions = story.submission_set.all()
+        waypoints = submissions
+        queryset = Story.objects.filter(id=story.id).select_related('submission_set')
+        return Response(#list or dictionary of basic values)
 
     @detail_route()
     def users(self, request, pk=None):
         story = self.get_object()
         pk = self.kwargs['pk']
         queryset = StoryUser.objects.filter(submission=story.pk)
+        #get to
         return Response(queryset.values())
 
 
@@ -55,7 +67,7 @@ class WaypointsByStory(viewsets.ModelViewSet):
     storyname = 'My First Story'
     queryset = Waypoint.objects.filter(submission__story__name='My First Story').select_related('submission')
 
-
+#these are pretty much useless
 class UserViewSet(viewsets.ModelViewSet):
     queryset = StoryUser.objects.all()
     serializer_class = UserSerializer

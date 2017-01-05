@@ -33,8 +33,3 @@ urlpatterns = [
     url(r'^api/', include(api_patterns))
 
 ]
-
-# urlpatterns = patterns('',
-#     url(r'^api/', include('router.urls', namespace="api")),
-#     url(r'^test/', TemplateView.as_view(template_name="index.html"))
-# )

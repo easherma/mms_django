@@ -9,6 +9,9 @@ class StoryUser(AbstractBaseUser, PermissionsMixin):
     username = models.CharField(max_length=200)
     email = models.EmailField(max_length=254, unique=True)
     USERNAME_FIELD = 'email'
+    # @TODO def get_waypoints():
+
+
 
 class Story(models.Model):
     name = models.CharField(max_length=200)
@@ -17,6 +20,9 @@ class Story(models.Model):
     user = models.ForeignKey(StoryUser, null = True)
     def __unicode__(self):
         return self.name
+    @classmethod
+    def waypoints():
+        story = Story.objects.all()
 
 class Submission(models.Model):
     user = models.ForeignKey(StoryUser)
