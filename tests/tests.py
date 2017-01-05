@@ -3,10 +3,10 @@ import factory
 import factory.fuzzy
 import geojson
 import json
-from . import models
-from .models import StoryUser
-from .models import Waypoint
-from .models import Submission
+from stories import models
+from stories.models import StoryUser
+from stories.models import Waypoint
+from stories.models import Submission
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase

@@ -3,7 +3,7 @@ import factory
 import factory.fuzzy
 import geojson
 import json
-from . import models
+from stories import models
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase

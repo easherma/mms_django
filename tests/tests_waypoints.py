@@ -3,12 +3,12 @@ from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 import geojson
-from .serializers import UserSerializer
+from stories.serializers import UserSerializer
 import factory
 import factory.fuzzy
-from .models import Waypoint
+from stories.models import Waypoint
 from tests import WaypointFactory
-from .models import StoryUser
+from stories.models import StoryUser
 from tests import StoryUserFactory
 #from django.test import Client
 

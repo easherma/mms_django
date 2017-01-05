@@ -2,10 +2,10 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
-from .serializers import UserSerializer
+from stories.serializers import UserSerializer
 import factory
 import factory.fuzzy
-from .models import Submission
+from stories.models import Submission
 from tests import SubmissionFactory
 #from django.test import Client
 
