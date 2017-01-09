@@ -4,7 +4,6 @@ import factory.fuzzy
 import geojson
 import json
 from . import models
-from .models import StoryUser
 from .models import Story
 from .models import Waypoint
 from .models import Submission
@@ -17,13 +16,13 @@ from django.contrib.auth.models import User
 
 
 
-class StoryUserFactory(factory.django.DjangoModelFactory):
+class UserFactory(factory.django.DjangoModelFactory):
     class Meta:
-        model = StoryUser
+        model = User
     username = factory.fuzzy.FuzzyText(length=12, prefix='')
     email = factory.LazyAttribute(lambda a: u'{0}@example.com'.format(a.username).lower())
     #story = factory.RelatedFactory(StoryFactory)
-    User.objects.create_user(self.username, self.email, factory.fuzzy.FuzzyText(length=12, prefix=''))
+    #User.objects.create_user(self.username, self.email, factory.fuzzy.FuzzyText(length=12, prefix=''))
 
     #user = factory.SubFactory(StoryUserFactory)
 
@@ -33,11 +32,11 @@ class StoryFactory(factory.django.DjangoModelFactory):
     name= factory.fuzzy.FuzzyText(length=8, prefix='')
     description= factory.fuzzy.FuzzyText(length=250, prefix='')
     instructions= factory.fuzzy.FuzzyText(length=350, prefix='')
-    #owner= StoryUserFactory.create()
+    owner= factory.SubFactory(UserFactory)
 
     @factory.post_generation
     def create_submissions(self, create, extracted, **kwargs):
-        self.owner = StoryUserFactory.create()
+        #self.owner = UserFac#tory.create()
         if not create:
             return
         for i in range(10):
@@ -47,7 +46,7 @@ class StoryFactory(factory.django.DjangoModelFactory):
 class SubmissionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = models.Submission
-    user = factory.SubFactory(StoryUserFactory)
+    user = factory.SubFactory(UserFactory)
     story = factory.SubFactory(StoryFactory)
 
 class WaypointFactory(factory.django.DjangoModelFactory):

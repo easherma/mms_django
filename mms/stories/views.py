@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from stories.models import Story, StoryUser, Submission, Waypoint
+from stories.models import Story, Submission, Waypoint
 from stories.serializers import StorySerializer, UserSerializer, SubmissionSerializer, WaypointSerializer
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -42,7 +42,7 @@ class StoryViewSet(viewsets.ModelViewSet):
     def users(self, request, pk=None):
         story = self.get_object()
         pk = self.kwargs['pk']
-        queryset = StoryUser.objects.filter(submission=story.pk)
+        queryset = User.objects.filter(submission=story.pk)
         #get to
         return Response(queryset.values())
 
@@ -71,7 +71,7 @@ class WaypointsByStory(viewsets.ModelViewSet):
 
 #these are pretty much useless
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = StoryUser.objects.all()
+    queryset = User.objects.all()
     serializer_class = UserSerializer
 
 class SubmissionViewSet(viewsets.ModelViewSet):

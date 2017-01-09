@@ -1,6 +1,6 @@
 from django.views.generic.base import TemplateView
 from django.contrib.auth.models import User
-from stories.models import Story, StoryUser, Submission, Waypoint
+from stories.models import Story, Submission, Waypoint
 from stories.serializers import StorySerializer, UserSerializer, SubmissionSerializer, WaypointSerializer
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer
@@ -22,7 +22,7 @@ class HomePageView(TemplateView):
         return Story.objects.all()
 
     def users(self):
-        return StoryUser.objects.all()
+        return User.objects.all()
 
     def submissions(self):
         return submissions.objects.all()
@@ -59,7 +59,7 @@ class StoryPageView(generics.RetrieveAPIView):
         title = "Stories"
         return Story.objects.filter(pk=id).select_related('user')
     def users(self):
-        return StoryUser.objects.all()
+        return User.objects.all()
 
 
 

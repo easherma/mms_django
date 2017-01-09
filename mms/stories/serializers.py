@@ -1,11 +1,11 @@
-#from django.contrib.auth.models import User
+from django.contrib.auth.models import User
 from rest_framework import serializers
-from stories.models import Story, StoryUser, Submission, Waypoint
+from stories.models import Story, Submission, Waypoint
 #from rest_framework_gis.serializers import GeoFeatureModelSerializer
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
     submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
-    owner = serializers.HyperlinkedRelatedField(many=True, view_name='storyuser-detail', queryset = StoryUser.objects.all(), allow_null=True)
+    owner = serializers.HyperlinkedRelatedField(view_name='user-detail', queryset = User.objects.all(), allow_null=True)
     class Meta:
         model = Story
         fields = ('url', 'name', 'description', 'instructions', 'submissions', 'owner')
@@ -13,7 +13,7 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
     class Meta:
-        model = StoryUser
+        model = User
         fields = ('url','username', 'email', 'submissions')
 
 class SubmissionSerializer(serializers.HyperlinkedModelSerializer):

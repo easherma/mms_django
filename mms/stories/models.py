@@ -1,31 +1,34 @@
 import datetime
-from django.contrib.auth.models import AbstractBaseUser
-from django.contrib.auth.models import PermissionsMixin
+# from django.contrib.auth.models import AbstractBaseUser
+# from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
+from django.conf import settings
+from django.contrib.auth import get_user_model
 
 class Story(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
+    owner = models.ForeignKey(User, related_name='owner', null = True)
 
     def __unicode__(self):
         return self.name
     # @classmethod
     # def waypoints():
     #     story = Story.objects.all()
-class StoryUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=200)
-    email = models.EmailField(max_length=254, unique=True)
-    USERNAME_FIELD = 'email'
-    story = models.ForeignKey(Story, null = True, related_name='owner')
-    # @TODO def get_waypoints():
+# class StoryUser(models.Model):
+#     user = models.OneToOneField(User, on_delete=models.CASCADE)
+#     #email = models.ForeignKey(User)
+#     USERNAME_FIELD = 'email'
+#     story = models.ForeignKey(Story, null = True, related_name='owner')
+#     # @TODO def get_waypoints():
 
 
 
 class Submission(models.Model):
-    user = models.ForeignKey(StoryUser, related_name='submissions', on_delete=models.CASCADE)
+    user = models.ForeignKey(User, related_name='submissions', on_delete=models.CASCADE)
     story = models.ForeignKey(Story , related_name='submissions', on_delete=models.CASCADE)
 
 class Waypoint(models.Model):
