@@ -101,7 +101,7 @@ class SubmissionTestCase(TestCase):
         self.assertEqual(submission.story, story)
         self.assertEqual(submission.user, user)
         waypoint = WaypointFactory.create_batch(5, submission=submission)
-        #waypoints = Waypoint.objects.all()
+        waypoints = Waypoint.objects.all()
         submissions = Submission.objects.all()
 
 

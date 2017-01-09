@@ -5,9 +5,10 @@ from stories.models import Story, StoryUser, Submission, Waypoint
 
 class StorySerializer(serializers.HyperlinkedModelSerializer):
     submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
+    owner = serializers.HyperlinkedRelatedField(many=True, view_name='storyuser-detail', queryset = StoryUser.objects.all(), allow_null=True)
     class Meta:
         model = Story
-        fields = ('url', 'name', 'description', 'instructions', 'submissions')
+        fields = ('url', 'name', 'description', 'instructions', 'submissions', 'owner')
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)

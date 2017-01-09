@@ -5,30 +5,31 @@ from django.db import models
 from django.utils import timezone
 from django.contrib.auth.models import User
 
-class StoryUser(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(max_length=200)
-    email = models.EmailField(max_length=254, unique=True)
-    USERNAME_FIELD = 'email'
-    # @TODO def get_waypoints():
-
-
-
 class Story(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    user = models.ForeignKey(StoryUser, null = True, related_name='owner')
+
     def __unicode__(self):
         return self.name
-    @classmethod
-    def waypoints():
-        story = Story.objects.all()
+    # @classmethod
+    # def waypoints():
+    #     story = Story.objects.all()
+class StoryUser(AbstractBaseUser, PermissionsMixin):
+    username = models.CharField(max_length=200)
+    email = models.EmailField(max_length=254, unique=True)
+    USERNAME_FIELD = 'email'
+    story = models.ForeignKey(Story, null = True, related_name='owner')
+    # @TODO def get_waypoints():
+
+
 
 class Submission(models.Model):
     user = models.ForeignKey(StoryUser, related_name='submissions', on_delete=models.CASCADE)
     story = models.ForeignKey(Story , related_name='submissions', on_delete=models.CASCADE)
 
 class Waypoint(models.Model):
+    waypoint = models.CharField(max_length=200 , blank=False)
     geom = models.CharField(max_length=200 , blank=False)
     notes = models.TextField()
     lng = models.DecimalField(max_digits=8, decimal_places=5, blank=False)
