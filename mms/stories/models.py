@@ -12,12 +12,10 @@ class Story(models.Model):
     description = models.TextField()
     instructions = models.TextField()
     owner = models.ForeignKey(User, related_name='owner', null = True)
-
-    def __unicode__(self):
-        return self.name
     # @classmethod
     # def waypoints():
     #     story = Story.objects.all()
+
 # class StoryUser(models.Model):
 #     user = models.OneToOneField(User, on_delete=models.CASCADE)
 #     #email = models.ForeignKey(User)
