@@ -69,7 +69,7 @@
   <header id="top" class="header">
   <div class="row">
       <div class="text-vertical-center col-md-5"><h1>Map My Story <!--    <span class="h3">  Map and share your migration story--></h1> </div>
-      <div class="text-vertical-center col-md-4"><h2> For State Of The Map 2016</h2></div>
+      <div class="text-vertical-center col-md-4"><h2> {{ view.stories.name }}</h2></div>
 
     </div>
   </header>
@@ -78,10 +78,11 @@
           <div class="row text-left">
               <div class="col-lg-10 col-lg-offset-1">
         <span class="lead">
-<p>We all know where we are right now (more or less). Tell us how you got here. Be as detailed or as general as you'd like!</p>
-
-<p>Once you submit your locations, we'll trace it on the map, where you can also see it along with the other submissions! </p></span>
-
+<div id ="description" class="text-vertical-left pull-left "> <p>{{ view.stories.description }}</p>
+</div>
+<div id ="instructions" class="text-vertical-left pull-left "> <p>{{ view.stories.instructions }}</p>
+</div>
+</span>
                   <!-- /.row (nested) -->
               </div>
               <div id="getstarted" class="text-vertical-right pull-right col-md-4">

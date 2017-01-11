@@ -12,14 +12,21 @@ from rest_framework.renderers import JSONRenderer
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 from django.shortcuts import render
+import random
+
+
 
 class HomePageView(TemplateView):
+
 
     template_name = "index.html"
     title = "Stories"
 
+
     def stories(self):
-        return Story.objects.all()
+        random_idx = random.randint(0, Story.objects.count() - 1)
+        random_story= Story.objects.all()[random_idx]
+        return random_story
 
     def users(self):
         return User.objects.all()
@@ -30,37 +37,39 @@ class HomePageView(TemplateView):
     def waypoints(self):
         return Waypoint.objects.all()
 
-# class StoryPageView(TemplateView):
-#
-#     template_name = "story.html"
-#     title = "Stories"
-#
-#     def stories(self, **kwargs):
-#         story = Story.objects.get(id=kwargs['story_id'])
-#
-#         return story
-#
-#     def users(self):
-#         return StoryUser.objects.all()
-#
-#     def submissions(self):
-#         return submissions.objects.all()
-#
-#     def waypoints(self):
-#         return Waypoint.objects.all()
+class StoryPageView(TemplateView):
 
-class StoryPageView(generics.RetrieveAPIView):
-    #queryset = Story.objects.all()
-    serializer_class = StorySerializer
-    template_name = "story.html"
-    renderer_classes = (TemplateHTMLRenderer,)
-    def get_queryset(self):
-        id = self.kwargs['pk']
-        title = "Stories"
-        return Story.objects.filter(pk=id).select_related('user')
+    template_name = "index.html"
+    title = "Stories"
+
+    def stories(self, **kwargs):
+        story = Story.objects.get(id=kwargs['story_id'])
+
+        return story
+
     def users(self):
-        return User.objects.all()
+        return StoryUser.objects.all()
 
+    def submissions(self):
+        return submissions.objects.all()
+
+    def waypoints(self):
+        return Waypoint.objects.all()
+
+
+
+# class StoryPageView(generics.RetrieveAPIView):
+#     #queryset = Story.objects.all()
+#     serializer_class = StorySerializer
+#     template_name = "index.html"
+#     renderer_classes = (TemplateHTMLRenderer,)
+#     def get_queryset(self):
+#         id = self.kwargs['pk']
+#         title = "Stories"
+#         return Story.objects.filter(pk=id).select_related('user')
+#     def users(self):
+#         return User.objects.all()
+#
 
 
 
