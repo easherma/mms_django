@@ -215,27 +215,26 @@ function getRandomColor() {
 // Executes periodically and indefinitely until server returns an error.
 // Operates asynchronously, so control flow is not tied up in this func.
 function update_map() {
-
-$.ajax({
+  api.get_data_for_all();
+  /*$.ajax({
     type : "GET",
-    url : "/api/stories/" + story_id + "/waypoints",
-    //id : story_id,
+    url : "/more",
+    data : "rowid=" + prevRowId,
     contentType : "text",
     success : function(result) {
       // Set current row
-      //prevRowId = result.lastrowid;
-      console.log('itworked');
-      console.log(result)
-      // Call with bring_to_back:=true so updates which may contain user paths dont draw over user paths.
-      //drawMultipoints(result.multipoints.features,result.places,all_layer_group,true);
+      prevRowId = result.lastrowid;
 
-      //setTimeout(update_map,UPDATE_INTERVAL);
+      // Call with bring_to_back:=true so updates which may contain user paths dont draw over user paths.
+      drawMultipoints(result.multipoints.features,result.places,all_layer_group,true);
+
+      setTimeout(update_map,UPDATE_INTERVAL);
     },
     error : function(error) {
-      console.log("error: " + error);
+      //console.log("error: " + error);
     }
   });
-
+  */
 }
 
 // Add array of Multipoint geoJSON features to a layer and animate.
