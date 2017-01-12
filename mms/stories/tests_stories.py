@@ -14,7 +14,7 @@ from stories.factories import UserFactory
 #TODO reverse function dosent seem to work. not sure if i should use vanilla django or rest, and if the viewset affects it?
 #TODO not sure i understand best practices of setting up these seperate tests vs other test, looks like data dosen't carry over
 class StoryTests(APITestCase):
-    def setUp(self):
+    # def setUp(self):
         # owner = UserFactory.create()
         # story = StoryFactory.create()
     def test_read_story(self):
