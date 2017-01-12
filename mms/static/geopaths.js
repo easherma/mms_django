@@ -120,7 +120,7 @@ function confirm() {
     map.addControl(new postControl());
   }
   }
-
+L.geoJSON(features).addTo(map);
 }
 
 function submitListen() {
@@ -226,7 +226,7 @@ $.ajax({
       //prevRowId = result.lastrowid;
       console.log('itworked');
       waypoints = result;
-      L.geoJSON(waypoints).addTo(map);
+      //L.geoJSON(waypoints).addTo(map);
 
       // Call with bring_to_back:=true so updates which may contain user paths dont draw over user paths.
       //drawMultipoints(result.multipoints.features,result.places,all_layer_group,true);
@@ -605,14 +605,14 @@ function post() {
 
   $.ajax({
     type : "POST",
-    url : "/geo",
-    data: JSON.stringify(geoJ),
+    url : "/api/waypoints/",
+    data: JSON.stringify(features),
     contentType: 'application/json',
     success: function(result) {
-      //console.log("success");
+      console.log("success");
     },
     error: function (error) {
-      //console.log("error: " + eval(error));
+      console.log("error: " + eval(error));
     }
   });
 };

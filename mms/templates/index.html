@@ -21,7 +21,7 @@
   <link href="{% static "pelias-leaflet-geocoder.css" %}" rel="stylesheet" >
   <script src="{% static "L.Polyline.SnakeAnim.js" %}"></script>
   <script src="{% static "./mms_api.js"%}"></script>
-  <script src="{% static "load.js"%}"></script>
+
 
 
 </head>
@@ -93,6 +93,7 @@
       </div>
       <!-- /.container -->
   </section>
+  
   <div id="buttons" class="text-vertical-right pull-right col-md-4">
 
     <button onclick='update_map()' class="btn btn-dark btn-lg"   >Re-draw this Story</button>
@@ -102,12 +103,13 @@
   <!-- <a href="/{{id}}" target="_blank" class="btn btn-dark btn-lg" >Share this Story</a> -->
   </div>
 
+
 <script> story_id = {{view.stories.id}}; </script>
-
   <div id='map' class='dark'></div>
-  <script type="text/javascript" src="{% static "geopaths.js" %}">
+  <script type="text/javascript" src="{% static "geopaths.js" %}"></script>
+  <script src="{% static "load.js"%}"></script>
 
-</script>
+
 
   <!-- <div id="map"> -->
 
@@ -134,10 +136,10 @@
     //var userLabels = [];
     //var userStories = [];
 
-    sessionStorage.setItem("stories", "");
+    /*sessionStorage.setItem("stories", "");
     if (sessionStorage > 1)
     {var allGeo2 = JSON.parse(sessionStorage.stories)}
-    var features = [];
+    var features = [];*/
     L.geoJson(features).addTo(map); //storypoints
     //var polyline = L.polyline(
 
@@ -259,7 +261,6 @@ function submitGeoj() {
           <!-- /.row -->
       </div>
       <!-- /.container -->
-  </section>
 
 
   <!-- Footer -->
