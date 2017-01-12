@@ -1,5 +1,5 @@
 from django.contrib.auth.models import User
-from django.core.urlresolvers import reverse
+#from django.core.urlresolvers import reverse
 from rest_framework import status
 from rest_framework.test import APITestCase
 from .serializers import UserSerializer
@@ -9,6 +9,7 @@ from .models import Story
 from stories.factories import StoryFactory
 from stories.factories import UserFactory
 from django.test import Client
+from rest_framework.reverse import reverse
 
 #TODO factory.build() breaks with Django 1.8?
 #TODO reverse function dosent seem to work. not sure if i should use vanilla django or rest, and if the viewset affects it?
@@ -18,7 +19,7 @@ class StoryTests(APITestCase):
     #     owner = UserFactory.create()
     #     story = StoryFactory.create()
     def test_read_story(self):
-        print(Story.objects.all().values())
+        #print(Story.objects.all().values())
         #story = StoryFactory.create()
         #url = reverse('/api/stories/')
         response = self.client.get('/api/stories/')
@@ -26,15 +27,19 @@ class StoryTests(APITestCase):
     def test_can_create_story(self):
         #story= #print (Story.objects.all().values())
         story = StoryFactory.stub()
-        owner = UserFactory.create()
+        ## make a user to associate with the story
+        user_create=UserFactory.create()
+        owner=User.objects.get(id=user_create.id)
+        owner_url=reverse('user-detail', args=(owner.id,))
         #self.data = {'name': 'My First Story', 'description': 'yourstory', 'instructions': 'put your dots on your maps and connect them with them lines', 'owner': owner}
-        self.data = {'name': 'name', 'description': 'description', 'instructions': 'put your dots on your maps and connect them with them lines'}
+        self.data = {'name': story.name, 'description': story.description, 'instructions': story.instructions, 'owner': owner_url}
+        url = reverse('story-list')
+        response = self.client.post(url, self.data)
 
-        response = self.client.post('/api/stories/', self.data)
-        print(response)
+
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Story.objects.count(), 1)
-        self.assertEqual(Story.objects.get().name, story.name)
+        self.assertEqual(Story.objects.get().name, str(story.name))
 """
 class ReadStory(APITestCase):
     def test_can_read_story(self):
