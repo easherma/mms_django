@@ -36,6 +36,8 @@ class Waypoint(models.Model):
     lng = models.DecimalField(max_digits=8, decimal_places=5, blank=False)
     lat = models.DecimalField(max_digits=8, decimal_places=5, blank=False)
     path_order = models.IntegerField(default=0)
+    gid = models.TextField()
+    label = models.TextField()
     submission = models.ForeignKey(Submission, null=True, related_name='waypoints', on_delete=models.CASCADE, blank=False)
     # def __unicode__(self):
     #     return "Waypoint: {}, {}".format(self.lng, self.lat)

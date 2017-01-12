@@ -225,7 +225,7 @@ $.ajax({
       // Set current row
       //prevRowId = result.lastrowid;
       console.log('itworked');
-      console.log(result)
+      waypoints = result;
       // Call with bring_to_back:=true so updates which may contain user paths dont draw over user paths.
       //drawMultipoints(result.multipoints.features,result.places,all_layer_group,true);
 
