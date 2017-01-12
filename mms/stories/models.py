@@ -11,7 +11,7 @@ class Story(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField()
     instructions = models.TextField()
-    owner = models.ForeignKey(User, related_name='owner', null = True)
+    owner = models.ForeignKey(User, related_name='owner', null = True,  blank=True)
     # @classmethod
     # def waypoints():
     #     story = Story.objects.all()
