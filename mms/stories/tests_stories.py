@@ -15,48 +15,33 @@ from rest_framework.reverse import reverse
 #TODO reverse function dosent seem to work. not sure if i should use vanilla django or rest, and if the viewset affects it?
 #TODO not sure i understand best practices of setting up these seperate tests vs other test, looks like data dosen't carry over
 class StoryTests(APITestCase):
-    # def setUp(self):
-    #     owner = UserFactory.create()
-    #     story = StoryFactory.create()
+    def setUp(self):
+        self.create_owner = UserFactory.create()
+        self.create_story = StoryFactory.create()
     def test_read_story(self):
-        #print(Story.objects.all().values())
-        #story = StoryFactory.create()
-        #url = reverse('/api/stories/')
         response = self.client.get('/api/stories/')
         self.assertEqual(response.status_code, status.HTTP_200_OK)
     def test_can_create_story(self):
         #story= #print (Story.objects.all().values())
-        story = StoryFactory.stub()
+        new_story = StoryFactory.stub()
         ## make a user to associate with the story
         user_create=UserFactory.create()
         owner=User.objects.get(id=user_create.id)
         owner_url=reverse('user-detail', args=(owner.id,))
         #self.data = {'name': 'My First Story', 'description': 'yourstory', 'instructions': 'put your dots on your maps and connect them with them lines', 'owner': owner}
-        self.data = {'name': story.name, 'description': story.description, 'instructions': story.instructions, 'owner': owner_url}
+        self.data = {'name': new_story.name, 'description': new_story.description, 'instructions': new_story.instructions, 'owner': owner_url}
         url = reverse('story-list')
         response = self.client.post(url, self.data)
-
-
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertEqual(Story.objects.count(), 1)
-        self.assertEqual(Story.objects.get().name, str(story.name))
-"""
-class ReadStory(APITestCase):
-    def test_can_read_story(self):
-        story = StoryFactory.create()
-        response = self.client.get('/api/stories/')
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-
-class UpdateStory(APITestCase):
+        self.assertEqual(Story.objects.count(), 2) #created story plus setup story
+        self.assertEqual(Story.objects.get(name=new_story.name).name, str(new_story.name))
     def test_can_update_story(self):
-        story = StoryFactory.create()
-        self.data = {'name': story.name, 'description': story.description, 'instructions': 'dothis', 'owner': story.owner}
+        story=self.create_story
+        self.data = {'name': story.name, 'description': story.description, 'instructions': 'dothis'}
         update = self.client.put('/api/stories/{}/'.format(story.id), self.data)
         self.assertEqual(update.status_code, status.HTTP_200_OK)
         response = self.client.get('/api/stories/{}/'.format(story.id))
         self.assertTrue(response.data['instructions'] == 'dothis')
-
-class DeleteStory(APITestCase):
     def test_can_delete_story(self):
         story = StoryFactory.create_batch(5)
         stories = Story.objects.all()
@@ -66,4 +51,3 @@ class DeleteStory(APITestCase):
         after = Story.objects.count()
         self.assertEqual(delete.status_code, status.HTTP_204_NO_CONTENT)
         self.assertTrue(before > after)
-"""
