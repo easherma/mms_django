@@ -19,7 +19,6 @@ router.register(r'waypoints', views.WaypointViewSet)
 
 api_patterns = [
     url(r'^', include(router.urls)),
-
     url('^schema/$', schema_view),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework'))
 ]
