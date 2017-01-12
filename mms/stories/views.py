@@ -41,23 +41,7 @@ class StoryViewSet(viewsets.ModelViewSet):
                 #geom['properties'] = properties
                 feature = geojson.Feature(geometry=geom, properties=properties)
                 features.append(feature)
-
-            #feature = geojson.Feature(geometry = submission.waypoints.values('geom'),properties = submission.waypoints.values('id', 'waypoint', 'notes', 'path_order', 'submission', 'gid', 'label'))
-            # for waypoint in waypoints:
-            #     properties = waypoints('id', 'waypoint', 'notes', 'path_order', 'submission', 'gid', 'label')[waypoint]
-            #     feature = waypoint_to_geojson(waypoint, properties)
-            #     waypoints.append(feature)
             waypoints = geojson.FeatureCollection(features)
-
-        # waypoints ={}
-        # for submission in submissions:
-        #     get submission.waypoint
-        #     append
-        #stories = Story.objects.prefetch_related('submission_set').all()
-        #story.submission_set.all()[0].waypoint_set.all().values()
-
-        #queryset = Story.objects.filter(id=story.id).select_related('submission_set')
-        #queryset = self.get_object()
         return Response(waypoints)
 
     @detail_route()
@@ -68,23 +52,6 @@ class StoryViewSet(viewsets.ModelViewSet):
         #get to
         return Response(queryset.values())
 
-
-    # def get_queryset(self):
-    #     """
-    #     This view should return a list of all the purchases for
-    #     the user as determined by the username portion of the URL.
-    #     """
-    #     name = self.kwargs['name']
-    #     return Story.objects.filter(name=name)
-
-# class StoryListViewSet(viewsets.ModelViewSet):
-#     """
-#     See existing stories, add one
-#     """
-#     queryset = Story.objects.all()
-#     serializer_class = StorySerializer
-#     renderer_classes = (TemplateHTMLRenderer,)
-#     template_name = 'rest_framework/stories_list.html'
 
 class WaypointsByStory(viewsets.ModelViewSet):
     serializer_class = WaypointSerializer
