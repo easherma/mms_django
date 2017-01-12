@@ -11,6 +11,7 @@ from rest_framework.renderers import JSONRenderer
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
 import geojson
+import json
 
 def waypoint_to_geojson(waypoint, properties):
     geometry= waypoint['geom']
@@ -29,14 +30,14 @@ class StoryViewSet(viewsets.ModelViewSet):
         #serializer = WaypointSerializer
         story = self.get_object()
         submissions = story.submissions.all()
-        waypoints = []
+        #waypoints = []
         for submission in submissions:
             #waypoints = submission.waypoints
             features = []
             for waypoint in submission.waypoints.values():
                 geom = geojson.loads(waypoint['geom'])
                 #should return just the props we need
-                properties = waypoint.items()
+                properties = waypoint
                 #geom['properties'] = properties
                 feature = geojson.Feature(geometry=geom, properties=properties)
                 features.append(feature)
@@ -46,8 +47,7 @@ class StoryViewSet(viewsets.ModelViewSet):
             #     properties = waypoints('id', 'waypoint', 'notes', 'path_order', 'submission', 'gid', 'label')[waypoint]
             #     feature = waypoint_to_geojson(waypoint, properties)
             #     waypoints.append(feature)
-            waypoints.append(features)
-
+            waypoints = geojson.FeatureCollection(features)
 
         # waypoints ={}
         # for submission in submissions:
@@ -58,7 +58,7 @@ class StoryViewSet(viewsets.ModelViewSet):
 
         #queryset = Story.objects.filter(id=story.id).select_related('submission_set')
         #queryset = self.get_object()
-        return Response(geojson.FeatureCollection(waypoints))
+        return Response(waypoints)
 
     @detail_route()
     def users(self, request, pk=None):
