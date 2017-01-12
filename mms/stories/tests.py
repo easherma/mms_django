@@ -2,79 +2,27 @@ from django.test import TestCase
 import factory
 import factory.fuzzy
 import geojson
+import json
 from . import models
-from .models import User
 from .models import Waypoint
+from .models import Submission
+from django.core.urlresolvers import reverse
+from rest_framework import status
+from rest_framework.test import APITestCase
+from rest_framework.test import APIClient
+from django.test import Client
+from django.contrib.auth.models import User
+from stories import factories
 
-class StoryFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Story
-    story_name= factory.fuzzy.FuzzyText(length=8, prefix='')
-    story_description= factory.fuzzy.FuzzyText(length=250, prefix='')
-    story_instructions= factory.fuzzy.FuzzyText(length=350, prefix='')
-
-class UserFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.User
-    story = factory.SubFactory(StoryFactory)
-    user_name = factory.fuzzy.FuzzyText(length=12, prefix='')
-    user_email = factory.LazyAttribute(lambda a: '{0}@example.com'.format(a.user_name).lower())
-
-
-class SubmissionFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Submission
-    user = factory.SubFactory(UserFactory)
-    story = factory.SubFactory(StoryFactory)
-
-class WaypointFactory(factory.django.DjangoModelFactory):
-    class Meta:
-        model = models.Waypoint
-    geom = geojson.utils.generate_random("Point")
-    lng = factory.fuzzy.FuzzyDecimal(-180, 180, precision=5)
-    lat = factory.fuzzy.FuzzyDecimal(-90, 90, precision=5)
-    notes = factory.fuzzy.FuzzyText(length=8, prefix='')
-    path_order = factory.fuzzy.FuzzyInteger(0, 6)
-    submission = factory.SubFactory(SubmissionFactory)
-
-class StoryTestCase(TestCase):
-    def test_something(self):
-        story = StoryFactory.create_batch(3)
-
-class UserTestCase(TestCase):
-    def test_something(self):
-        user = UserFactory.create_batch(5)
-        users = User.objects.all()
-        self.assertEqual(users.count(), 5)
-        self.assertIsNotNone(users[0].id)
-
-class WaypointTestCase(TestCase):
-    def test_something(self):
-        #waypoint = WaypointFactory.create_batch(5)
-        waypoint = WaypointFactory.create()
-        waypoints = Waypoint.objects.all()
-    def test_multWaypointForSubmission(self):
-        #waypoint = WaypointFactory.create_batch(5)
-        submission = SubmissionFactory.create()
-        waypoint = WaypointFactory.create_batch(5, submission=submission)
-        waypoints = Waypoint.objects.all()
-        self.assertIsNotNone(waypoints[0].id)
-        self.assertEqual(waypoints[0].submission, submission)
-        self.assertEqual(waypoints.count(), 5)
-        for waypoint in waypoints:
-            self.assertEqual(waypoint.submission, submission)
-            print waypoint.id, submission.id
-
-class SubmissionTestCase(TestCase):
-    def test_something(self):
-        submission = SubmissionFactory.create_batch(5)
-        all_entries= models.Submission.objects.all()
-        #import pdb; pdb.set_trace()
-
-
-class OutputTestCase(TestCase):
-
-    def test_get_profile_stats(self):
-        profiles = []
-        profiles.extend(SubmissionFactory.create_batch(4))
-        #print profiles
+class ReadTestCase(TestCase):
+    """setup db and create some inital data"""
+    def setUp(self):
+        """create story with random id, populate it with 5 submissions. each submission has 5 waypoints"""
+        id = factory.fuzzy.FuzzyInteger(0, 256)
+        self.story_id = id.fuzz()
+        story = factories.StoryFactory.create(id=self.story_id)
+        submissions = factories.SubmissionFactory.create_batch(5, story=story)
+        for submission in submissions:
+            waypoints = factories.WaypointFactory.create_batch(5, submission=submission)
+    def test_setup(self):
+        self.assertEqual(models.Story.objects.all()[0].id, self.story_id)

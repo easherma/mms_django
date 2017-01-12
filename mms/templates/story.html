@@ -1,0 +1,13 @@
+<h1>{{ name }}</h1>
+<ul>
+{{name |default:"nothing"}}
+
+{{description|default:"nothing"}}
+{{instructions|default:"nothing"}}
+
+{{user.username}}
+  {% for user in users %}
+    <li>{{ user.username|default:"nothing" }}</li>
+  {% endfor %}
+@todo: write html, js to get/populate data
+<ul>
