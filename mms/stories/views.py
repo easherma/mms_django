@@ -10,6 +10,15 @@ from rest_framework.decorators import detail_route, list_route
 from rest_framework.renderers import JSONRenderer
 from django.utils.six import BytesIO
 from rest_framework.parsers import JSONParser
+import geojson
+import json
+
+def waypoint_to_geojson(waypoint, properties):
+    geometry= waypoint['geom']
+
+    #[f.name for f in models.Waypoint._meta.get_fields()]
+    feature = geojson.Feature(geometry=geometry, properties=properties)
+    return feature
 
 class StoryViewSet(viewsets.ModelViewSet):
 
@@ -21,11 +30,24 @@ class StoryViewSet(viewsets.ModelViewSet):
         #serializer = WaypointSerializer
         story = self.get_object()
         submissions = story.submissions.all()
-        waypoints = []
+        #waypoints = []
         for submission in submissions:
-            waypoint = submission.waypoints.values()
-            waypoints.append(waypoint)
+            #waypoints = submission.waypoints
+            features = []
+            for waypoint in submission.waypoints.values():
+                geom = geojson.loads(waypoint['geom'])
+                #should return just the props we need
+                properties = waypoint
+                #geom['properties'] = properties
+                feature = geojson.Feature(geometry=geom, properties=properties)
+                features.append(feature)
 
+            #feature = geojson.Feature(geometry = submission.waypoints.values('geom'),properties = submission.waypoints.values('id', 'waypoint', 'notes', 'path_order', 'submission', 'gid', 'label'))
+            # for waypoint in waypoints:
+            #     properties = waypoints('id', 'waypoint', 'notes', 'path_order', 'submission', 'gid', 'label')[waypoint]
+            #     feature = waypoint_to_geojson(waypoint, properties)
+            #     waypoints.append(feature)
+            waypoints = geojson.FeatureCollection(features)
 
         # waypoints ={}
         # for submission in submissions:
