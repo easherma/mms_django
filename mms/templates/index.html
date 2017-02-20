@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+{% load leaflet_tags %}
+<head>
+  <title>SOTM</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://npmcdn.com/leaflet@1.0.0-rc.1/dist/leaflet.css">
+  <script src="https://npmcdn.com/leaflet@1.0.0-rc.1/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.4.0/leaflet-geocoder-mapzen.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet-geocoder-mapzen/1.4.0/leaflet-geocoder-mapzen.js"></script>
+  <script src="https://cartodb-libs.global.ssl.fastly.net/cartodb.js/v3/3.15/cartodb.js"></script>
+
+
+
+  <script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+  {% load staticfiles %}
+  <link href="{% static "layout.css" %}" rel="stylesheet">
+  <link href="{% static "style.css" %}" rel="stylesheet" >
+  <link href="{% static "pelias-leaflet-geocoder.css" %}" rel="stylesheet" >
+  <script src="{% static "L.Polyline.SnakeAnim.js" %}"></script>
+  <script src="{% static "./mms_api.js"%}"></script>
+  {% leaflet_js %}
+  {% leaflet_css %}
+
+
+
+</head>
+<body>
+    {% leaflet_map "yourmap" %}
+  <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
+  <nav id="sidebar-wrapper">
+      <ul class="sidebar-nav">
+          <a id="menu-close" href="#" class="btn btn-light btn-lg pull-right toggle"><i class="fa fa-times"></i></a>
+          <li class="sidebar-brand">
+              <a href="#top"  onclick = $("#menu-close").click(); >Map My Story</a>
+          </li>
+          <li>
+              <a href="#map" onclick = $("#menu-close").click(); >Explore the Map</a>
+          </li>
+          <li>
+              <a href="#instructions" onclick = $("#menu-close").click(); >How does this work?</a>
+          </li>
+          <li>
+              <a href="#about" onclick = $("#menu-close").click(); >About</a>
+          </li>
+          <li class = "hidden">
+              <a href="#contact" onclick = $("#menu-close").click(); >Contact</a>
+          </li>
+      </ul>
+  </nav>
+  <script> -->
+  api = new API("easherma", "SOTM_test")
+
+
+  </script>
+
+
+      <script src="{% static "notes.js"%}"></script>
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-81210576-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+
+  <!-- Header -->
+  <header id="top" class="header">
+  <div class="row">
+      <div class="text-vertical-center col-md-5"><h1>Map My Story <!--    <span class="h3">  Map and share your migration story--></h1> </div>
+      <div class="text-vertical-center col-md-4"><h2> {{ view.stories.name }}</h2></div>
+
+    </div>
+  </header>
+  <section id="instructions" class="instructions bg-primary">
+
+          <div class="row text-left">
+              <div class="col-lg-10 col-lg-offset-1">
+        <span class="lead">
+<div id ="description" class="text-vertical-left pull-left "> <p>{{ view.stories.description }}</p>
+</div>
+<div id ="instructions" class="text-vertical-left pull-left "> <p>{{ view.stories.instructions }}</p>
+</div>
+</span>
+                  <!-- /.row (nested) -->
+              </div>
+              <div id="getstarted" class="text-vertical-right pull-right col-md-4">
+              <p> Click 'Submit Your Story' to get started.</p>
+          </div>
+          <!-- /.row -->
+      </div>
+      <!-- /.container -->
+  </section>
+
+  <div id="buttons" class="text-vertical-right pull-right col-md-4">
+
+    <button onclick='update_map()' class="btn btn-dark btn-lg"   >Re-draw this Story</button>
+    <a href ="#map"> <button onclick='geocoder.expand();' class="btn btn-lg btn-dark" style="background-color:#337AB7"  >Submit Your Story</button></a> <!--/took out map.removeLayer(all_layer_group)-->
+  </div>
+  <!-- <button onclick='postUserFeatures(initialTimestamp + Math.random(), "dumb web dev", "testing, hardcoded");' class="btn btn-dark btn-lg">Post Your Route</button> -->
+  <!-- <a href="/{{id}}" target="_blank" class="btn btn-dark btn-lg" >Share this Story</a> -->
+  </div>
+
+
+<script> story_id = {{view.stories.id}}; </script>
+  <div id='map' class='dark'></div>
+  <script type="text/javascript" src="{% static "geopaths.js" %}"></script>
+  <script src="{% static "load.js"%}"></script>
+
+
+
+  <!-- <div id="map"> -->
+
+  <script>
+
+  function plotUser() {
+
+    function plotMarkers ( latlng ) {
+      L.marker( latlng ).addTo(map);
+    };
+    var markers = userCoords.forEach(plotMarkers);
+    return markers;
+  }
+
+  var api = new API("easherma", "SOTM_test");
+    /* var map = L.map('map').setView([37.804146, -122.275045], 16);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+    }).addTo(map); */
+    var markers = [];
+    var userCoords = [];
+
+
+    //var userLabels = [];
+    //var userStories = [];
+
+    /*sessionStorage.setItem("stories", "");
+    if (sessionStorage > 1)
+    {var allGeo2 = JSON.parse(sessionStorage.stories)}
+    var features = [];*/
+    L.geoJson(features).addTo(map); //storypoints
+    //var polyline = L.polyline(
+
+    userLayer = L.featureGroup();
+    var allStories = [];
+    var  timestamps = [];
+//listening to event geocoder
+geocoder.on('select', function (e) {
+  //get the selected feature, push it to a features array
+
+  feature = e.feature;
+
+
+  timestamps.push(e.originalEvent['timeStamp']);
+  initialTimestamp = timestamps[0];
+  console.log(feature);
+//coords  for polylines, pushes polylines to features
+  geocoderCoords = e.latlng;
+  var popup = L.popup()
+    .setLatLng(geocoder.marker._latlng)
+    //.setContent("<button>First name:<br><input type='text' name='firstname' value='Your first name' ><br>Last name:<br><input type='text' name='RaisonSociale' value='Your last name'><input class='click' type='submit' name='submit' value='Sent'></button>")
+    .setContent(e.feature.properties.name + ' <button onclick= "confirm(resetCloseInput());" type="submit" class="btn btn-md btn-dark" style="background-color:#337AB7">Confirm</button> <button onclick= "userCoords = [];features = [];geocoder.resetInput();map.closePopup();" type="reset" class="btn btn-md btn-dark">Clear</button>')
+    .openOn(map);
+  console.log(e.latlng)
+//  if (userCoords.length > 1)
+//return polyline;
+//  userLayer.bindPopup("TESTING" + userLabels[0] + " to: " + userLabels[1]);
+//  userLayer.addTo(map);
+
+});
+
+
+
+/* not used atm, I think I was trying to sketch out how to handle backend to/froms
+function submitStory() {
+  allStories.push([userStories]);
+  userStories = []
+  //selection = []
+}
+*/
+function submitGeoj() {
+
+  features.forEach(function(i) {allGeo.features.push(i)});
+  userCoords = [];
+  console.log(JSON.stringify(allGeo));
+  sessionStorage.setItem("stories", JSON.stringify(allGeo));
+  features = [];
+
+}
+
+//allGeo.features[0]['geometry']['type']
+
+
+
+  </script>
+  </div>
+  <!-- Custom Theme JavaScript -->
+  <script>
+  // Closes the sidebar menu
+  $("#menu-close").click(function(e) {
+      e.preventDefault();
+      $("#sidebar-wrapper").toggleClass("active");
+  });
+
+  // Opens the sidebar menu
+  $("#menu-toggle").click(function(e) {
+      e.preventDefault();
+      $("#sidebar-wrapper").toggleClass("active");
+  });
+
+  // Scrolls to the selected menu item on the page
+  /*$(function() {
+      $('a[href*=#]:not([href=#])').click(function() {
+          if (location.pathname.replace(/^\//, '') == this.pathname.replace(/^\//, '') || location.hostname == this.hostname) {
+
+              var target = $(this.hash);
+              target = target.length ? target : $('[name=' + this.hash.slice(1) + ']');
+              if (target.length) {
+                  $('html,body').animate({
+                      scrollTop: target.offset().top
+                  }, 1000);
+                  return false;
+              }
+          }
+      });
+  });*/
+  </script>
+
+  <!-- Call to Action -->
+  <aside class="call-to-action bg-primary">
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-12 text-center">
+                  <!--<a href="#map" class="btn btn-lg btn-light">Add Your Story!</a>
+                  <a href="#signup" class="btn btn-lg btn-dark">Stay In Touch!</a>-->
+                  <p> Wasn't that fun!?</p>
+              </div>
+          </div>
+      </div>
+  </aside>
+
+
+  <!-- About -->
+  <section id="about" class="about">
+      <div class="container">
+          <div class="row text left">
+              <div class="col-lg-9 col-lg-offset-1 text-left">
+        <h2>About:</h2>
+        <hr class="small">
+                  <p class = "lead">Follow on twitter @OSGISOMG or email me at ericandrewsherman@gmail.com</p>
+                  <p><a href="/OSGIS"> Check out the OSGIS Guide!</a>
+                    <p><a href="https://soundcloud.com/user-987474427/1-pissed-off-optimists "> Check out my podcast!</a>
+
+              </div>
+              <div class="col-lg-5 col-lg-offset-1 text-left">
+                          <!--<iframe id='signup' src="https://docs.google.com/forms/d/1JYwnBkVeSqjPiL-HYAwGIjs1RL285Aiy5mJVAoQbllM/viewform?embedded=true" width="100%" height="465" frameborder="0" marginheight="0" marginwidth="0" scrolling="no">Loading...</iframe> -->
+              </div>
+          </div>
+          <!-- /.row -->
+      </div>
+      <!-- /.container -->
+
+
+  <!-- Footer -->
+  <footer>
+      <div class="container">
+          <div class="row">
+              <div class="col-lg-10 col-lg-offset-1 text-center">
+                  </h4>
+                  <ul class="list-unstyled">
+                      <li><i class="fa fa-github fa-fw"></i> <a href="https://github.com/easherma/mapmystory">https://github.com/easherma/mapmystory</a></li>
+                      <li><i class="fa fa-envelope-o fa-fw"></i>  <a href="ericandrewsherman@gmail.com">ericandrewsherman@gmail.com</a>
+                      </li>
+                  </ul>
+              </div>
+          </div>
+      </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{% extends "rest_framework/api.html" %}
+<html><body>
+<h1>Stories</h1>
+<ul>
+    {% for story in stories %}
+    <li>{{ profile.name }}</li>
+    {% endfor %}
+</ul>
+</body></html>
