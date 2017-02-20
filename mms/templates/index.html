@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+{% load leaflet_tags %}
 <head>
   <title>SOTM</title>
   <meta charset="utf-8">
@@ -21,11 +22,14 @@
   <link href="{% static "pelias-leaflet-geocoder.css" %}" rel="stylesheet" >
   <script src="{% static "L.Polyline.SnakeAnim.js" %}"></script>
   <script src="{% static "./mms_api.js"%}"></script>
+  {% leaflet_js %}
+  {% leaflet_css %}
 
 
 
 </head>
 <body>
+    {% leaflet_map "yourmap" %}
   <a id="menu-toggle" href="#" class="btn btn-dark btn-lg toggle"><i class="fa fa-bars"></i></a>
   <nav id="sidebar-wrapper">
       <ul class="sidebar-nav">
@@ -93,7 +97,7 @@
       </div>
       <!-- /.container -->
   </section>
-  
+
   <div id="buttons" class="text-vertical-right pull-right col-md-4">
 
     <button onclick='update_map()' class="btn btn-dark btn-lg"   >Re-draw this Story</button>
