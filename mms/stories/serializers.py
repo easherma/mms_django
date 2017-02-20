@@ -12,6 +12,7 @@ class StorySerializer(serializers.HyperlinkedModelSerializer):
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     submissions = serializers.HyperlinkedRelatedField(many=True, view_name='submission-detail', queryset = Submission.objects.all(), allow_null=True)
+
     class Meta:
         model = User
         fields = ('url','username', 'email', 'submissions')

@@ -10,6 +10,7 @@ schema_view = get_schema_view(title='Map My Story API View')
 
 router = routers.DefaultRouter()
 router.register(r'users', views.UserViewSet)
+#router.register(r'userdetail', views.UserDetail.as_view({'get': 'list'}), base_name='')
 router.register(r'stories', views.StoryViewSet)
 router.register(r'submissions', views.SubmissionViewSet)
 router.register(r'waypoints', views.WaypointViewSet)
